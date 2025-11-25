@@ -1,87 +1,102 @@
-# MyPostman
+# myPostman
 
-簡易版 HTTP 請求工具 (Simple HTTP Request Tool)
+A simple Windows Forms HTTP request tool similar to Postman, developed for .NET Framework 3.5.
 
-類似於 Postman 的 Windows Form 應用程式，可用於發送和儲存 HTTP 請求。
-A Windows Forms application similar to Postman, for sending and saving HTTP requests.
+## Features / 功能
 
-## 功能特點 (Features)
+- **Send HTTP Requests / 發送 HTTP 請求**: Support GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS methods
+- **Custom Headers / 自定義標頭**: Add custom HTTP headers to your requests
+- **Request Body / 請求內容**: Send JSON or other content in request body
+- **Response Viewer / 回應檢視**: View response body and headers
+- **JSON Formatting / JSON 格式化**: Automatically format JSON responses for readability
+- **Encoding Conversion / 編碼轉換**: Convert hex-encoded characters (Unicode escape, URL encoding, etc.) to readable Chinese/English text
+- **Save/Load Requests / 儲存/載入請求**: Save your frequently used requests for later use
+- **Import/Export / 匯入/匯出**: Export requests to XML files and import them
 
-### HTTP 請求 (HTTP Requests)
-- 支援多種 HTTP 方法：GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
-- Supports multiple HTTP methods: GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
+## System Requirements / 系統需求
 
-### 標頭設定 (Headers Configuration)
-- 自訂請求標頭
-- Custom request headers
+- Windows XP SP3 or later / Windows XP SP3 或更新版本
+- .NET Framework 3.5 / .NET Framework 3.5
 
-### 請求內容 (Request Body)
-- 支援 JSON、XML 或任何文字格式的請求內容
-- Supports JSON, XML, or any text format for request body
+## Building the Project / 建置專案
 
-### 儲存與載入 (Save & Load)
-- 將請求儲存為 JSON 檔案
-- Save requests as JSON files
-- 從檔案載入已儲存的請求
-- Load saved requests from files
+### Using Visual Studio / 使用 Visual Studio
 
-### 錯誤處理 (Error Handling)
-- 將錯誤訊息轉換為可閱讀的繁體中文/英文訊息
-- Convert error messages to readable Traditional Chinese/English messages
-- 詳細的 HTTP 狀態碼說明
-- Detailed HTTP status code descriptions
+1. Open `myPostman.sln` in Visual Studio 2008 or later
+2. Build the solution (F6 or Build > Build Solution)
+3. Run the application (F5 or Debug > Start Debugging)
 
-### 編碼轉換 (Encoding Conversion)
-- 自動將回應中的十六進位字元轉換為可讀文字
-- Automatically convert hexadecimal characters in responses to readable text
-- 支援 Unicode 轉義序列 (\uXXXX)
-- Supports Unicode escape sequences (\uXXXX)
-- 支援 URL 編碼 (%XX)
-- Supports URL encoding (%XX)
-- 支援 HTML 實體 (&#xXXXX;)
-- Supports HTML entities (&#xXXXX;)
-
-## 開發環境需求 (Development Requirements)
-
-- .NET 8.0 SDK 或更高版本 (for modern development)
-- .NET 8.0 SDK or higher (for modern development)
-- Windows 作業系統 (用於執行 Windows Forms 應用程式)
-- Windows OS (required for running Windows Forms applications)
-
-## 建置專案 (Building the Project)
+### Using MSBuild / 使用 MSBuild
 
 ```bash
-dotnet build MyPostman.sln
+msbuild myPostman.sln /p:Configuration=Release
 ```
 
-## 執行專案 (Running the Project)
+The executable will be located at `src\myPostman\bin\Release\myPostman.exe`
 
-```bash
-dotnet run --project MyPostman/MyPostman.csproj
+## Usage / 使用方式
+
+1. **Enter URL / 輸入 URL**: Type the target URL in the URL field
+2. **Select Method / 選擇方法**: Choose HTTP method (GET, POST, PUT, DELETE, etc.)
+3. **Add Headers / 添加標頭** (Optional): Enter custom headers in the Headers tab (format: `Header-Name: Header-Value`)
+4. **Add Body / 添加內容** (Optional): For POST/PUT requests, enter request body in the Body tab
+5. **Send Request / 發送請求**: Click the "發送 / Send" button
+6. **View Response / 查看回應**: View the response body and headers in the right panel
+
+### Saving Requests / 儲存請求
+
+1. Configure your request (URL, method, headers, body)
+2. Click "儲存 / Save" button
+3. Enter a name for the request
+4. The request will be saved and appear in the "Saved Requests" list
+
+### Loading Requests / 載入請求
+
+1. Select a saved request from the list
+2. Double-click or click "載入 / Load" button
+3. The request configuration will be loaded into the form
+
+## Encoding Support / 編碼支援
+
+The tool automatically detects and converts the following encoded formats:
+- Unicode escape sequences: `\u4E2D\u6587` → 中文
+- URL encoding: `%E4%B8%AD%E6%96%87` → 中文
+- Hex sequences: `\xE4\xB8\xAD\xE6\x96\x87` → 中文
+- HTML entities: `&#20013;` → 中
+
+Supported character sets:
+- UTF-8
+- GBK (Simplified Chinese / 簡體中文)
+- Big5 (Traditional Chinese / 繁體中文)
+
+## Error Messages / 錯誤訊息
+
+Error messages are displayed in a readable format with both Chinese and English descriptions:
+- Network errors (DNS resolution, connection failures)
+- Timeout errors
+- SSL/TLS certificate errors
+- HTTP status code errors
+
+## Project Structure / 專案結構
+
+```
+myPostman/
+├── myPostman.sln              # Solution file
+├── README.md                  # This file
+└── src/
+    └── myPostman/
+        ├── myPostman.csproj   # Project file
+        ├── Program.cs         # Application entry point
+        ├── MainForm.cs        # Main form logic
+        ├── MainForm.Designer.cs # Form designer
+        ├── MainForm.resx      # Form resources
+        ├── HttpRequestHelper.cs # HTTP request handling
+        ├── RequestConfig.cs   # Request save/load functionality
+        ├── EncodingHelper.cs  # Encoding conversion utilities
+        └── Properties/
+            └── AssemblyInfo.cs # Assembly information
 ```
 
-## 注意事項 (Notes)
+## License / 授權
 
-- 此專案設計目標相容於 .NET Framework 3.5 的 API 風格
-- This project is designed with .NET Framework 3.5 API style compatibility in mind
-- 現代化的專案檔案格式允許使用較新的 .NET SDK 進行建置
-- Modern project file format allows building with newer .NET SDK
-
-## 專案結構 (Project Structure)
-
-```
-MyPostman/
-├── MainForm.cs           # 主視窗邏輯 (Main form logic)
-├── MainForm.Designer.cs  # 主視窗設計器 (Main form designer)
-├── MainForm.resx         # 主視窗資源 (Main form resources)
-├── Program.cs            # 應用程式進入點 (Application entry point)
-├── RequestManager.cs     # HTTP 請求管理 (HTTP request management)
-├── ResponseHelper.cs     # 回應處理輔助 (Response processing helper)
-└── Properties/
-    ├── AssemblyInfo.cs   # 組件資訊 (Assembly information)
-    └── ...
-```
-
-## 授權 (License)
-
-MIT License
+This project is open source and available for personal and commercial use.

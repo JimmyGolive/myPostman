@@ -1,59 +1,26 @@
 # Build results
 [Dd]ebug/
-[Dd]ebugPublic/
 [Rr]elease/
-[Rr]eleases/
 x64/
 x86/
-bld/
 [Bb]in/
 [Oo]bj/
-[Ll]og/
+build/
+bld/
 
 # Visual Studio files
 .vs/
-*.user
 *.suo
-*.userosscache
+*.user
 *.sln.docstates
 *.userprefs
 
-# Mono auto generated files
-mono_crash.*
-
-# NuGet Packages
+# NuGet packages
+packages/
 *.nupkg
 *.snupkg
-**/packages/*
-!**/packages/build/
-*.nuget.props
-*.nuget.targets
-
-# Build results
-*.dll
-*.exe
-*.pdb
-*.ilk
-*.meta
-*.obj
-*.pch
-*.pgc
-*.pgd
-*.rsp
-*.sbr
-*.tlb
-*.tli
-*.tlh
-*.tmp
-*.tmp_proj
-*.vspscc
-*.vssscc
-
-# Test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
-TestResult.xml
-nunit-*.xml
+project.lock.json
+project.fragment.lock.json
 
 # OS generated files
 .DS_Store
@@ -64,7 +31,9 @@ nunit-*.xml
 ehthumbs.db
 Thumbs.db
 
-# Temporary files
-*.tmp
-*.temp
-~$*
+# IDE files
+*.swp
+*.swo
+*~
+.idea/
+*.orig
