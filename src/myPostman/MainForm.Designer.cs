@@ -20,6 +20,7 @@ namespace myPostman
             this.splitContainerMain = new System.Windows.Forms.SplitContainer();
             this.splitContainerLeft = new System.Windows.Forms.SplitContainer();
             this.groupBoxRequest = new System.Windows.Forms.GroupBox();
+            this.chkIgnoreCertificate = new System.Windows.Forms.CheckBox();
             this.chkFormatJson = new System.Windows.Forms.CheckBox();
             this.lblTimeout = new System.Windows.Forms.Label();
             this.txtTimeout = new System.Windows.Forms.TextBox();
@@ -104,6 +105,7 @@ namespace myPostman
             // 
             // groupBoxRequest
             // 
+            this.groupBoxRequest.Controls.Add(this.chkIgnoreCertificate);
             this.groupBoxRequest.Controls.Add(this.chkFormatJson);
             this.groupBoxRequest.Controls.Add(this.lblTimeout);
             this.groupBoxRequest.Controls.Add(this.txtTimeout);
@@ -121,6 +123,18 @@ namespace myPostman
             this.groupBoxRequest.TabIndex = 0;
             this.groupBoxRequest.TabStop = false;
             this.groupBoxRequest.Text = "請求 / Request";
+            // 
+            // chkIgnoreCertificate
+            // 
+            this.chkIgnoreCertificate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.chkIgnoreCertificate.AutoSize = true;
+            this.chkIgnoreCertificate.Location = new System.Drawing.Point(120, 352);
+            this.chkIgnoreCertificate.Name = "chkIgnoreCertificate";
+            this.chkIgnoreCertificate.Size = new System.Drawing.Size(150, 17);
+            this.chkIgnoreCertificate.TabIndex = 10;
+            this.chkIgnoreCertificate.Text = "忽略SSL憑證 / Ignore SSL";
+            this.chkIgnoreCertificate.UseVisualStyleBackColor = true;
+            this.chkIgnoreCertificate.CheckedChanged += new System.EventHandler(this.chkIgnoreCertificate_CheckedChanged);
             // 
             // chkFormatJson
             // 
@@ -530,5 +544,6 @@ namespace myPostman
         private System.Windows.Forms.TextBox txtResponse;
         private System.Windows.Forms.TabPage tabPageResponseHeaders;
         private System.Windows.Forms.TextBox txtResponseHeaders;
+        private System.Windows.Forms.CheckBox chkIgnoreCertificate;
     }
 }

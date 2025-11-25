@@ -352,8 +352,38 @@ namespace myPostman
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
             }
 
-            // Accept all certificates (for testing purposes)
-            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            // Note: Certificate validation is enabled by default for security
+            // If you need to bypass certificate validation for testing, 
+            // use the checkbox option and be aware of the security implications
+        }
+
+        private void chkIgnoreCertificate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkIgnoreCertificate.Checked)
+            {
+                DialogResult result = MessageBox.Show(
+                    "警告：忽略 SSL 憑證驗證可能會導致安全風險。\n" +
+                    "僅在測試環境中使用此選項。\n\n" +
+                    "Warning: Ignoring SSL certificate validation may pose security risks.\n" +
+                    "Only use this option in testing environments.\n\n" +
+                    "確定要繼續嗎? / Are you sure you want to continue?",
+                    "安全警告 / Security Warning",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                }
+                else
+                {
+                    chkIgnoreCertificate.Checked = false;
+                }
+            }
+            else
+            {
+                ServicePointManager.ServerCertificateValidationCallback = null;
+            }
         }
     }
 }

@@ -60,7 +60,8 @@ namespace myPostman
                 }
 
                 // Set request body for POST, PUT methods
-                if (!string.IsNullOrEmpty(body) && (method.ToUpper() == "POST" || method.ToUpper() == "PUT" || method.ToUpper() == "PATCH"))
+                string methodUpper = method.ToUpper();
+                if (!string.IsNullOrEmpty(body) && (methodUpper == "POST" || methodUpper == "PUT" || methodUpper == "PATCH"))
                 {
                     byte[] bodyBytes = Encoding.UTF8.GetBytes(body);
                     request.ContentLength = bodyBytes.Length;

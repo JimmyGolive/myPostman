@@ -9,6 +9,9 @@ namespace myPostman
     /// </summary>
     public class EncodingHelper
     {
+        // Cache UTF-8 encoding with throwOnInvalidBytes for validation
+        private static readonly Encoding Utf8Strict = new UTF8Encoding(false, true);
+        
         /// <summary>
         /// Processes the response text, converting hex-encoded characters to readable text
         /// Supports Traditional Chinese (Big5), Simplified Chinese (GB2312/GBK), and UTF-8
@@ -291,8 +294,7 @@ namespace myPostman
             // Try UTF-8 first
             try
             {
-                Encoding utf8 = new UTF8Encoding(false, true);
-                string result = utf8.GetString(bytes);
+                string result = Utf8Strict.GetString(bytes);
                 
                 // Verify the result doesn't contain replacement characters
                 if (!result.Contains("\uFFFD"))
