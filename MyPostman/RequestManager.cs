@@ -242,9 +242,15 @@ namespace MyPostman
             int valueEnd = valueStart;
             while (valueEnd < json.Length)
             {
-                if (json[valueEnd] == '"' && json[valueEnd - 1] != '\\')
+                // Check if we found an unescaped closing quote
+                if (json[valueEnd] == '"')
                 {
-                    break;
+                    // Check if the previous character is an escape character
+                    // valueEnd is at least valueStart, so valueEnd - 1 >= valueStart - 1 >= 0
+                    if (valueEnd == valueStart || json[valueEnd - 1] != '\\')
+                    {
+                        break;
+                    }
                 }
                 valueEnd++;
             }

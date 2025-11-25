@@ -56,6 +56,15 @@ namespace MyPostman
                 {
                     string hex = match.Groups[1].Value;
                     int codePoint = Convert.ToInt32(hex, 16);
+                    // Validate code point range (exclude surrogates and values > 0x10FFFF)
+                    if (codePoint >= 0xD800 && codePoint <= 0xDFFF)
+                    {
+                        return match.Value; // Keep original for invalid surrogate pairs
+                    }
+                    if (codePoint > 0x10FFFF)
+                    {
+                        return match.Value; // Keep original for out of range values
+                    }
                     return char.ConvertFromUtf32(codePoint);
                 });
             }
@@ -98,10 +107,10 @@ namespace MyPostman
             
             while (i < input.Length)
             {
-                if (input[i] == '%' && i + 2 < input.Length)
+                if (input[i] == '%' && i + 2 <= input.Length - 1)
                 {
                     string hex = input.Substring(i + 1, 2);
-                    if (IsHexString(hex))
+                    if (IsValidHexPair(hex))
                     {
                         bytes.Add(Convert.ToByte(hex, 16));
                         i += 3;
@@ -125,10 +134,16 @@ namespace MyPostman
         }
 
         /// <summary>
-        /// Check if a string is a valid hex string
+        /// Check if a string is a valid two-character hexadecimal string
+        /// 檢查字串是否為有效的兩字元十六進位字串
         /// </summary>
-        private static bool IsHexString(string str)
+        private static bool IsValidHexPair(string str)
         {
+            if (str == null || str.Length != 2)
+            {
+                return false;
+            }
+            
             foreach (char c in str)
             {
                 if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')))
@@ -136,7 +151,7 @@ namespace MyPostman
                     return false;
                 }
             }
-            return str.Length == 2;
+            return true;
         }
 
         /// <summary>
