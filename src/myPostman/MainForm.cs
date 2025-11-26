@@ -89,9 +89,12 @@ namespace myPostman
             Application.DoEvents();
 
             // Use a thread to avoid freezing the UI
+            // Get authentication configuration
+            AuthConfig auth = GetAuthConfig();
+
             Thread requestThread = new Thread(delegate()
             {
-                HttpResponse response = HttpRequestHelper.SendRequest(url, method, headers, body, timeout);
+                HttpResponse response = HttpRequestHelper.SendRequest(url, method, headers, body, timeout, auth);
 
                 // Update UI on the main thread
                 this.BeginInvoke((MethodInvoker)delegate
@@ -180,6 +183,7 @@ namespace myPostman
                 txtHeaders.Text,
                 txtBody.Text
             );
+            config.Auth = GetAuthConfig();
 
             savedConfigs.Add(config);
 
@@ -220,6 +224,7 @@ namespace myPostman
 
             txtHeaders.Text = config.Headers;
             txtBody.Text = config.Body;
+            SetAuthConfig(config.Auth);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -323,6 +328,14 @@ namespace myPostman
             txtResponseHeaders.Text = "";
             lblStatus.Text = "狀態 / Status: 準備就緒 / Ready";
             lblStatus.ForeColor = SystemColors.ControlText;
+            
+            // Clear authentication fields
+            cmbAuthType.SelectedIndex = 0;
+            txtUsername.Text = "";
+            txtPassword.Text = "";
+            txtToken.Text = "";
+            txtApiKeyName.Text = "";
+            txtApiKeyValue.Text = "";
         }
 
         private void btnCopyResponse_Click(object sender, EventArgs e)
@@ -383,6 +396,86 @@ namespace myPostman
             else
             {
                 ServicePointManager.ServerCertificateValidationCallback = null;
+            }
+        }
+
+        private void cmbAuthType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Hide all auth panels
+            panelBasicAuth.Visible = false;
+            panelBearerToken.Visible = false;
+            panelApiKey.Visible = false;
+
+            // Show the selected auth panel
+            switch (cmbAuthType.SelectedIndex)
+            {
+                case 1: // Basic Auth
+                    panelBasicAuth.Visible = true;
+                    break;
+                case 2: // Bearer Token
+                    panelBearerToken.Visible = true;
+                    break;
+                case 3: // API Key
+                    panelApiKey.Visible = true;
+                    break;
+            }
+        }
+
+        private AuthConfig GetAuthConfig()
+        {
+            AuthConfig auth = new AuthConfig();
+
+            switch (cmbAuthType.SelectedIndex)
+            {
+                case 0: // None
+                    auth.Type = AuthType.None;
+                    break;
+                case 1: // Basic Auth
+                    auth.Type = AuthType.BasicAuth;
+                    auth.Username = txtUsername.Text;
+                    auth.Password = txtPassword.Text;
+                    break;
+                case 2: // Bearer Token
+                    auth.Type = AuthType.BearerToken;
+                    auth.Token = txtToken.Text;
+                    break;
+                case 3: // API Key
+                    auth.Type = AuthType.ApiKey;
+                    auth.ApiKeyName = txtApiKeyName.Text;
+                    auth.ApiKeyValue = txtApiKeyValue.Text;
+                    break;
+            }
+
+            return auth;
+        }
+
+        private void SetAuthConfig(AuthConfig auth)
+        {
+            if (auth == null)
+            {
+                cmbAuthType.SelectedIndex = 0;
+                return;
+            }
+
+            switch (auth.Type)
+            {
+                case AuthType.None:
+                    cmbAuthType.SelectedIndex = 0;
+                    break;
+                case AuthType.BasicAuth:
+                    cmbAuthType.SelectedIndex = 1;
+                    txtUsername.Text = auth.Username ?? "";
+                    txtPassword.Text = auth.Password ?? "";
+                    break;
+                case AuthType.BearerToken:
+                    cmbAuthType.SelectedIndex = 2;
+                    txtToken.Text = auth.Token ?? "";
+                    break;
+                case AuthType.ApiKey:
+                    cmbAuthType.SelectedIndex = 3;
+                    txtApiKeyName.Text = auth.ApiKeyName ?? "";
+                    txtApiKeyValue.Text = auth.ApiKeyValue ?? "";
+                    break;
             }
         }
     }

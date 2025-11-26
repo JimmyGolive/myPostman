@@ -5,6 +5,7 @@ A simple Windows Forms HTTP request tool similar to Postman, developed for .NET 
 ## Features / 功能
 
 - **Send HTTP Requests / 發送 HTTP 請求**: Support GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS methods
+- **Authentication / 認證**: Support for Basic Auth, Bearer Token, and API Key authentication
 - **Custom Headers / 自定義標頭**: Add custom HTTP headers to your requests
 - **Request Body / 請求內容**: Send JSON or other content in request body
 - **Response Viewer / 回應檢視**: View response body and headers
@@ -40,21 +41,46 @@ The executable will be located at `src\myPostman\bin\Release\myPostman.exe`
 2. **Select Method / 選擇方法**: Choose HTTP method (GET, POST, PUT, DELETE, etc.)
 3. **Add Headers / 添加標頭** (Optional): Enter custom headers in the Headers tab (format: `Header-Name: Header-Value`)
 4. **Add Body / 添加內容** (Optional): For POST/PUT requests, enter request body in the Body tab
-5. **Send Request / 發送請求**: Click the "發送 / Send" button
-6. **View Response / 查看回應**: View the response body and headers in the right panel
+5. **Configure Authentication / 設定認證** (Optional): Use the Auth tab to configure authentication (see below)
+6. **Send Request / 發送請求**: Click the "發送 / Send" button
+7. **View Response / 查看回應**: View the response body and headers in the right panel
+
+### Authentication / 認證
+
+myPostman supports multiple authentication methods in the **Auth** tab:
+
+#### None / 無認證
+No authentication will be applied to the request.
+
+#### Basic Auth / 基本認證
+- **Username / 使用者名稱**: Enter your username
+- **Password / 密碼**: Enter your password
+- The credentials will be automatically encoded in Base64 and sent as an `Authorization: Basic` header
+
+#### Bearer Token / Bearer 令牌
+- **Token / 令牌**: Enter your bearer token
+- The token will be sent as an `Authorization: Bearer` header
+- Commonly used for JWT authentication and OAuth 2.0
+
+#### API Key / API 金鑰
+- **Key Name / 金鑰名稱**: Enter the header name (e.g., `X-API-Key`, `api-key`)
+- **Key Value / 金鑰值**: Enter the API key value
+- The API key will be sent as a custom header with the specified name
+
+**⚠️ Security Note / 安全注意事項**: Authentication credentials (passwords, tokens, API keys) are stored in plain text when you save requests. This tool is designed for development and testing purposes only. Do not use with production credentials or on shared computers. / 認證憑證（密碼、令牌、API 金鑰）在儲存請求時以明文形式保存。此工具僅供開發和測試使用，請勿使用於生產環境憑證或共用電腦。
 
 ### Saving Requests / 儲存請求
 
-1. Configure your request (URL, method, headers, body)
+1. Configure your request (URL, method, headers, body, authentication)
 2. Click "儲存 / Save" button
 3. Enter a name for the request
-4. The request will be saved and appear in the "Saved Requests" list
+4. The request (including authentication settings) will be saved and appear in the "Saved Requests" list
 
 ### Loading Requests / 載入請求
 
 1. Select a saved request from the list
 2. Double-click or click "載入 / Load" button
-3. The request configuration will be loaded into the form
+3. The request configuration (including authentication) will be loaded into the form
 
 ## Encoding Support / 編碼支援
 
@@ -92,7 +118,9 @@ myPostman/
         ├── MainForm.resx      # Form resources
         ├── HttpRequestHelper.cs # HTTP request handling
         ├── RequestConfig.cs   # Request save/load functionality
+        ├── AuthConfig.cs      # Authentication configuration
         ├── EncodingHelper.cs  # Encoding conversion utilities
+        ├── InputDialog.cs     # Input dialog helper
         └── Properties/
             └── AssemblyInfo.cs # Assembly information
 ```

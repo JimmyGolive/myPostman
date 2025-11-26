@@ -21,6 +21,21 @@ namespace myPostman
         /// <returns>HttpResponse containing status, headers, and body</returns>
         public static HttpResponse SendRequest(string url, string method, string headers, string body, int timeout)
         {
+            return SendRequest(url, method, headers, body, timeout, null);
+        }
+
+        /// <summary>
+        /// Sends an HTTP request with authentication and returns the response
+        /// </summary>
+        /// <param name="url">Target URL</param>
+        /// <param name="method">HTTP method (GET, POST, PUT, DELETE)</param>
+        /// <param name="headers">Request headers (format: "Header1: Value1\nHeader2: Value2")</param>
+        /// <param name="body">Request body</param>
+        /// <param name="timeout">Timeout in milliseconds</param>
+        /// <param name="auth">Authentication configuration</param>
+        /// <returns>HttpResponse containing status, headers, and body</returns>
+        public static HttpResponse SendRequest(string url, string method, string headers, string body, int timeout, AuthConfig auth)
+        {
             HttpResponse response = new HttpResponse();
             HttpWebRequest request = null;
             HttpWebResponse webResponse = null;
@@ -42,6 +57,24 @@ namespace myPostman
 
                 // Set default User-Agent
                 request.UserAgent = "myPostman/1.0";
+
+                // Apply authentication header if provided
+                if (auth != null && auth.Type != AuthType.None)
+                {
+                    string authHeader = auth.GetAuthorizationHeader();
+                    if (!string.IsNullOrEmpty(authHeader))
+                    {
+                        // Prepend auth header to existing headers
+                        if (string.IsNullOrEmpty(headers))
+                        {
+                            headers = authHeader;
+                        }
+                        else
+                        {
+                            headers = authHeader + "\r\n" + headers;
+                        }
+                    }
+                }
 
                 // Parse and set headers
                 if (!string.IsNullOrEmpty(headers))
