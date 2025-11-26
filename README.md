@@ -5,6 +5,11 @@ A simple Windows Forms HTTP request tool similar to Postman, developed for .NET 
 ## Features / 功能
 
 - **Send HTTP Requests / 發送 HTTP 請求**: Support GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS methods
+- **Authentication / 身份驗證**: Support multiple authentication methods:
+  - Basic Authentication (username/password)
+  - Bearer Token (JWT, OAuth tokens)
+  - OAuth 2.0
+  - API Key (Header or Query Parameter)
 - **Custom Headers / 自定義標頭**: Add custom HTTP headers to your requests
 - **Request Body / 請求內容**: Send JSON or other content in request body
 - **Response Viewer / 回應檢視**: View response body and headers
@@ -38,10 +43,16 @@ The executable will be located at `src\myPostman\bin\Release\myPostman.exe`
 
 1. **Enter URL / 輸入 URL**: Type the target URL in the URL field
 2. **Select Method / 選擇方法**: Choose HTTP method (GET, POST, PUT, DELETE, etc.)
-3. **Add Headers / 添加標頭** (Optional): Enter custom headers in the Headers tab (format: `Header-Name: Header-Value`)
-4. **Add Body / 添加內容** (Optional): For POST/PUT requests, enter request body in the Body tab
-5. **Send Request / 發送請求**: Click the "發送 / Send" button
-6. **View Response / 查看回應**: View the response body and headers in the right panel
+3. **Add Authentication / 添加身份驗證** (Optional): Go to the Authorization tab and configure:
+   - **None**: No authentication
+   - **Basic Authentication**: Enter username and password
+   - **Bearer Token**: Enter your JWT or OAuth token
+   - **OAuth 2.0**: Enter your OAuth 2.0 access token
+   - **API Key**: Enter key name and value, choose Header or Query Parameter location
+4. **Add Headers / 添加標頭** (Optional): Enter custom headers in the Headers tab (format: `Header-Name: Header-Value`)
+5. **Add Body / 添加內容** (Optional): For POST/PUT requests, enter request body in the Body tab
+6. **Send Request / 發送請求**: Click the "發送 / Send" button
+7. **View Response / 查看回應**: View the response body and headers in the right panel
 
 ### Saving Requests / 儲存請求
 
@@ -55,6 +66,53 @@ The executable will be located at `src\myPostman\bin\Release\myPostman.exe`
 1. Select a saved request from the list
 2. Double-click or click "載入 / Load" button
 3. The request configuration will be loaded into the form
+
+## Authentication Support / 身份驗證支援
+
+### Basic Authentication / 基本驗證
+
+Basic Authentication encodes your username and password in Base64 format and sends it in the `Authorization` header.
+
+1. Select "Basic Authentication" in the Authorization tab
+2. Enter your username
+3. Enter your password
+4. The credentials will be automatically encoded and sent as: `Authorization: Basic <base64-encoded-credentials>`
+
+### Bearer Token / 令牌驗證
+
+Bearer Token authentication is commonly used with JWT (JSON Web Tokens) and OAuth 2.0 access tokens.
+
+1. Select "Bearer Token" in the Authorization tab
+2. Paste your token (e.g., JWT token or OAuth access token)
+3. The token will be sent as: `Authorization: Bearer <your-token>`
+
+### OAuth 2.0
+
+OAuth 2.0 authentication works the same way as Bearer Token. You need to obtain an access token from your OAuth provider first.
+
+1. Select "OAuth 2.0" in the Authorization tab
+2. Paste your OAuth 2.0 access token
+3. The token will be sent as: `Authorization: Bearer <your-access-token>`
+
+**Note**: This tool does not handle the OAuth 2.0 authorization flow. You need to obtain the access token separately and paste it here.
+
+### API Key / API 金鑰
+
+API Key authentication allows you to send a custom key-value pair either in the headers or as a query parameter.
+
+**Header Method:**
+1. Select "API Key" in the Authorization tab
+2. Enter the key name (e.g., `X-API-Key`, `api-key`)
+3. Enter the key value
+4. Select "Header" option
+5. The key will be sent as a custom header: `X-API-Key: <your-key-value>`
+
+**Query Parameter Method:**
+1. Select "API Key" in the Authorization tab
+2. Enter the key name (e.g., `api_key`, `key`)
+3. Enter the key value
+4. Select "Query Parameter" option
+5. The key will be appended to the URL: `https://api.example.com/users?api_key=<your-key-value>`
 
 ## Encoding Support / 編碼支援
 
@@ -91,6 +149,7 @@ myPostman/
         ├── MainForm.Designer.cs # Form designer
         ├── MainForm.resx      # Form resources
         ├── HttpRequestHelper.cs # HTTP request handling
+        ├── AuthenticationHelper.cs # Authentication logic
         ├── RequestConfig.cs   # Request save/load functionality
         ├── EncodingHelper.cs  # Encoding conversion utilities
         └── Properties/
