@@ -32,6 +32,22 @@ namespace myPostman
             this.txtHeaders = new System.Windows.Forms.TextBox();
             this.tabPageBody = new System.Windows.Forms.TabPage();
             this.txtBody = new System.Windows.Forms.TextBox();
+            this.tabPageAuth = new System.Windows.Forms.TabPage();
+            this.cmbAuthType = new System.Windows.Forms.ComboBox();
+            this.lblAuthType = new System.Windows.Forms.Label();
+            this.panelBasicAuth = new System.Windows.Forms.Panel();
+            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.lblUsername = new System.Windows.Forms.Label();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.panelBearerToken = new System.Windows.Forms.Panel();
+            this.txtToken = new System.Windows.Forms.TextBox();
+            this.lblToken = new System.Windows.Forms.Label();
+            this.panelApiKey = new System.Windows.Forms.Panel();
+            this.txtApiKeyName = new System.Windows.Forms.TextBox();
+            this.txtApiKeyValue = new System.Windows.Forms.TextBox();
+            this.lblApiKeyName = new System.Windows.Forms.Label();
+            this.lblApiKeyValue = new System.Windows.Forms.Label();
             this.cmbMethod = new System.Windows.Forms.ComboBox();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.lblUrl = new System.Windows.Forms.Label();
@@ -60,6 +76,10 @@ namespace myPostman
             this.tabControlRequest.SuspendLayout();
             this.tabPageHeaders.SuspendLayout();
             this.tabPageBody.SuspendLayout();
+            this.tabPageAuth.SuspendLayout();
+            this.panelBasicAuth.SuspendLayout();
+            this.panelBearerToken.SuspendLayout();
+            this.panelApiKey.SuspendLayout();
             this.groupBoxSavedRequests.SuspendLayout();
             this.groupBoxResponse.SuspendLayout();
             this.tabControlResponse.SuspendLayout();
@@ -209,6 +229,7 @@ namespace myPostman
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlRequest.Controls.Add(this.tabPageHeaders);
             this.tabControlRequest.Controls.Add(this.tabPageBody);
+            this.tabControlRequest.Controls.Add(this.tabPageAuth);
             this.tabControlRequest.Location = new System.Drawing.Point(10, 73);
             this.tabControlRequest.Name = "tabControlRequest";
             this.tabControlRequest.SelectedIndex = 0;
@@ -262,6 +283,162 @@ namespace myPostman
             this.txtBody.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtBody.Size = new System.Drawing.Size(416, 235);
             this.txtBody.TabIndex = 0;
+            // 
+            // tabPageAuth
+            // 
+            this.tabPageAuth.Controls.Add(this.cmbAuthType);
+            this.tabPageAuth.Controls.Add(this.lblAuthType);
+            this.tabPageAuth.Controls.Add(this.panelBasicAuth);
+            this.tabPageAuth.Controls.Add(this.panelBearerToken);
+            this.tabPageAuth.Controls.Add(this.panelApiKey);
+            this.tabPageAuth.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAuth.Name = "tabPageAuth";
+            this.tabPageAuth.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAuth.Size = new System.Drawing.Size(422, 241);
+            this.tabPageAuth.TabIndex = 2;
+            this.tabPageAuth.Text = "Auth";
+            this.tabPageAuth.UseVisualStyleBackColor = true;
+            // 
+            // lblAuthType
+            // 
+            this.lblAuthType.AutoSize = true;
+            this.lblAuthType.Location = new System.Drawing.Point(10, 10);
+            this.lblAuthType.Name = "lblAuthType";
+            this.lblAuthType.Size = new System.Drawing.Size(121, 13);
+            this.lblAuthType.TabIndex = 0;
+            this.lblAuthType.Text = "認證類型 / Auth Type:";
+            // 
+            // cmbAuthType
+            // 
+            this.cmbAuthType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAuthType.FormattingEnabled = true;
+            this.cmbAuthType.Items.AddRange(new object[] {
+            "None",
+            "Basic Auth",
+            "Bearer Token",
+            "API Key"});
+            this.cmbAuthType.Location = new System.Drawing.Point(10, 26);
+            this.cmbAuthType.Name = "cmbAuthType";
+            this.cmbAuthType.Size = new System.Drawing.Size(200, 21);
+            this.cmbAuthType.TabIndex = 1;
+            this.cmbAuthType.SelectedIndexChanged += new System.EventHandler(this.cmbAuthType_SelectedIndexChanged);
+            // 
+            // panelBasicAuth
+            // 
+            this.panelBasicAuth.Controls.Add(this.lblUsername);
+            this.panelBasicAuth.Controls.Add(this.txtUsername);
+            this.panelBasicAuth.Controls.Add(this.lblPassword);
+            this.panelBasicAuth.Controls.Add(this.txtPassword);
+            this.panelBasicAuth.Location = new System.Drawing.Point(10, 60);
+            this.panelBasicAuth.Name = "panelBasicAuth";
+            this.panelBasicAuth.Size = new System.Drawing.Size(400, 170);
+            this.panelBasicAuth.TabIndex = 2;
+            this.panelBasicAuth.Visible = false;
+            // 
+            // lblUsername
+            // 
+            this.lblUsername.AutoSize = true;
+            this.lblUsername.Location = new System.Drawing.Point(5, 5);
+            this.lblUsername.Name = "lblUsername";
+            this.lblUsername.Size = new System.Drawing.Size(119, 13);
+            this.lblUsername.TabIndex = 0;
+            this.lblUsername.Text = "使用者名稱 / Username:";
+            // 
+            // txtUsername
+            // 
+            this.txtUsername.Location = new System.Drawing.Point(5, 21);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(380, 20);
+            this.txtUsername.TabIndex = 1;
+            // 
+            // lblPassword
+            // 
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Location = new System.Drawing.Point(5, 50);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(80, 13);
+            this.lblPassword.TabIndex = 2;
+            this.lblPassword.Text = "密碼 / Password:";
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(5, 66);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(380, 20);
+            this.txtPassword.TabIndex = 3;
+            // 
+            // panelBearerToken
+            // 
+            this.panelBearerToken.Controls.Add(this.lblToken);
+            this.panelBearerToken.Controls.Add(this.txtToken);
+            this.panelBearerToken.Location = new System.Drawing.Point(10, 60);
+            this.panelBearerToken.Name = "panelBearerToken";
+            this.panelBearerToken.Size = new System.Drawing.Size(400, 170);
+            this.panelBearerToken.TabIndex = 3;
+            this.panelBearerToken.Visible = false;
+            // 
+            // lblToken
+            // 
+            this.lblToken.AutoSize = true;
+            this.lblToken.Location = new System.Drawing.Point(5, 5);
+            this.lblToken.Name = "lblToken";
+            this.lblToken.Size = new System.Drawing.Size(68, 13);
+            this.lblToken.TabIndex = 0;
+            this.lblToken.Text = "Token / 令牌:";
+            // 
+            // txtToken
+            // 
+            this.txtToken.Location = new System.Drawing.Point(5, 21);
+            this.txtToken.Multiline = true;
+            this.txtToken.Name = "txtToken";
+            this.txtToken.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtToken.Size = new System.Drawing.Size(380, 60);
+            this.txtToken.TabIndex = 1;
+            // 
+            // panelApiKey
+            // 
+            this.panelApiKey.Controls.Add(this.lblApiKeyName);
+            this.panelApiKey.Controls.Add(this.txtApiKeyName);
+            this.panelApiKey.Controls.Add(this.lblApiKeyValue);
+            this.panelApiKey.Controls.Add(this.txtApiKeyValue);
+            this.panelApiKey.Location = new System.Drawing.Point(10, 60);
+            this.panelApiKey.Name = "panelApiKey";
+            this.panelApiKey.Size = new System.Drawing.Size(400, 170);
+            this.panelApiKey.TabIndex = 4;
+            this.panelApiKey.Visible = false;
+            // 
+            // lblApiKeyName
+            // 
+            this.lblApiKeyName.AutoSize = true;
+            this.lblApiKeyName.Location = new System.Drawing.Point(5, 5);
+            this.lblApiKeyName.Name = "lblApiKeyName";
+            this.lblApiKeyName.Size = new System.Drawing.Size(96, 13);
+            this.lblApiKeyName.TabIndex = 0;
+            this.lblApiKeyName.Text = "金鑰名稱 / Key Name:";
+            // 
+            // txtApiKeyName
+            // 
+            this.txtApiKeyName.Location = new System.Drawing.Point(5, 21);
+            this.txtApiKeyName.Name = "txtApiKeyName";
+            this.txtApiKeyName.Size = new System.Drawing.Size(380, 20);
+            this.txtApiKeyName.TabIndex = 1;
+            // 
+            // lblApiKeyValue
+            // 
+            this.lblApiKeyValue.AutoSize = true;
+            this.lblApiKeyValue.Location = new System.Drawing.Point(5, 50);
+            this.lblApiKeyValue.Name = "lblApiKeyValue";
+            this.lblApiKeyValue.Size = new System.Drawing.Size(84, 13);
+            this.lblApiKeyValue.TabIndex = 2;
+            this.lblApiKeyValue.Text = "金鑰值 / Key Value:";
+            // 
+            // txtApiKeyValue
+            // 
+            this.txtApiKeyValue.Location = new System.Drawing.Point(5, 66);
+            this.txtApiKeyValue.Name = "txtApiKeyValue";
+            this.txtApiKeyValue.Size = new System.Drawing.Size(380, 20);
+            this.txtApiKeyValue.TabIndex = 3;
             // 
             // cmbMethod
             // 
@@ -495,6 +672,14 @@ namespace myPostman
             this.tabPageHeaders.PerformLayout();
             this.tabPageBody.ResumeLayout(false);
             this.tabPageBody.PerformLayout();
+            this.tabPageAuth.ResumeLayout(false);
+            this.tabPageAuth.PerformLayout();
+            this.panelBasicAuth.ResumeLayout(false);
+            this.panelBasicAuth.PerformLayout();
+            this.panelBearerToken.ResumeLayout(false);
+            this.panelBearerToken.PerformLayout();
+            this.panelApiKey.ResumeLayout(false);
+            this.panelApiKey.PerformLayout();
             this.groupBoxSavedRequests.ResumeLayout(false);
             this.groupBoxResponse.ResumeLayout(false);
             this.tabControlResponse.ResumeLayout(false);
@@ -508,6 +693,7 @@ namespace myPostman
 
             // Set default selection
             this.cmbMethod.SelectedIndex = 0;
+            this.cmbAuthType.SelectedIndex = 0;
         }
 
         #endregion
@@ -523,6 +709,22 @@ namespace myPostman
         private System.Windows.Forms.TextBox txtHeaders;
         private System.Windows.Forms.TabPage tabPageBody;
         private System.Windows.Forms.TextBox txtBody;
+        private System.Windows.Forms.TabPage tabPageAuth;
+        private System.Windows.Forms.ComboBox cmbAuthType;
+        private System.Windows.Forms.Label lblAuthType;
+        private System.Windows.Forms.Panel panelBasicAuth;
+        private System.Windows.Forms.TextBox txtUsername;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Label lblUsername;
+        private System.Windows.Forms.Label lblPassword;
+        private System.Windows.Forms.Panel panelBearerToken;
+        private System.Windows.Forms.TextBox txtToken;
+        private System.Windows.Forms.Label lblToken;
+        private System.Windows.Forms.Panel panelApiKey;
+        private System.Windows.Forms.TextBox txtApiKeyName;
+        private System.Windows.Forms.TextBox txtApiKeyValue;
+        private System.Windows.Forms.Label lblApiKeyName;
+        private System.Windows.Forms.Label lblApiKeyValue;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClear;
