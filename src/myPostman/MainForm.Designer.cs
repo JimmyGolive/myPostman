@@ -32,6 +32,22 @@ namespace myPostman
             this.txtHeaders = new System.Windows.Forms.TextBox();
             this.tabPageBody = new System.Windows.Forms.TabPage();
             this.txtBody = new System.Windows.Forms.TextBox();
+            this.tabPageAuth = new System.Windows.Forms.TabPage();
+            this.cmbAuthType = new System.Windows.Forms.ComboBox();
+            this.lblAuthType = new System.Windows.Forms.Label();
+            this.lblAuthUsername = new System.Windows.Forms.Label();
+            this.txtAuthUsername = new System.Windows.Forms.TextBox();
+            this.lblAuthPassword = new System.Windows.Forms.Label();
+            this.txtAuthPassword = new System.Windows.Forms.TextBox();
+            this.lblAuthToken = new System.Windows.Forms.Label();
+            this.txtAuthToken = new System.Windows.Forms.TextBox();
+            this.lblApiKeyName = new System.Windows.Forms.Label();
+            this.txtApiKeyName = new System.Windows.Forms.TextBox();
+            this.lblApiKeyValue = new System.Windows.Forms.Label();
+            this.txtApiKeyValue = new System.Windows.Forms.TextBox();
+            this.rdoApiKeyHeader = new System.Windows.Forms.RadioButton();
+            this.rdoApiKeyQuery = new System.Windows.Forms.RadioButton();
+            this.lblApiKeyLocation = new System.Windows.Forms.Label();
             this.cmbMethod = new System.Windows.Forms.ComboBox();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.lblUrl = new System.Windows.Forms.Label();
@@ -60,6 +76,7 @@ namespace myPostman
             this.tabControlRequest.SuspendLayout();
             this.tabPageHeaders.SuspendLayout();
             this.tabPageBody.SuspendLayout();
+            this.tabPageAuth.SuspendLayout();
             this.groupBoxSavedRequests.SuspendLayout();
             this.groupBoxResponse.SuspendLayout();
             this.tabControlResponse.SuspendLayout();
@@ -209,6 +226,7 @@ namespace myPostman
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlRequest.Controls.Add(this.tabPageHeaders);
             this.tabControlRequest.Controls.Add(this.tabPageBody);
+            this.tabControlRequest.Controls.Add(this.tabPageAuth);
             this.tabControlRequest.Location = new System.Drawing.Point(10, 73);
             this.tabControlRequest.Name = "tabControlRequest";
             this.tabControlRequest.SelectedIndex = 0;
@@ -262,6 +280,183 @@ namespace myPostman
             this.txtBody.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtBody.Size = new System.Drawing.Size(416, 235);
             this.txtBody.TabIndex = 0;
+            // 
+            // tabPageAuth
+            // 
+            this.tabPageAuth.Controls.Add(this.lblAuthType);
+            this.tabPageAuth.Controls.Add(this.cmbAuthType);
+            this.tabPageAuth.Controls.Add(this.lblAuthUsername);
+            this.tabPageAuth.Controls.Add(this.txtAuthUsername);
+            this.tabPageAuth.Controls.Add(this.lblAuthPassword);
+            this.tabPageAuth.Controls.Add(this.txtAuthPassword);
+            this.tabPageAuth.Controls.Add(this.lblAuthToken);
+            this.tabPageAuth.Controls.Add(this.txtAuthToken);
+            this.tabPageAuth.Controls.Add(this.lblApiKeyName);
+            this.tabPageAuth.Controls.Add(this.txtApiKeyName);
+            this.tabPageAuth.Controls.Add(this.lblApiKeyValue);
+            this.tabPageAuth.Controls.Add(this.txtApiKeyValue);
+            this.tabPageAuth.Controls.Add(this.lblApiKeyLocation);
+            this.tabPageAuth.Controls.Add(this.rdoApiKeyHeader);
+            this.tabPageAuth.Controls.Add(this.rdoApiKeyQuery);
+            this.tabPageAuth.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAuth.Name = "tabPageAuth";
+            this.tabPageAuth.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageAuth.Size = new System.Drawing.Size(422, 241);
+            this.tabPageAuth.TabIndex = 2;
+            this.tabPageAuth.Text = "Authorization";
+            this.tabPageAuth.UseVisualStyleBackColor = true;
+            // 
+            // lblAuthType
+            // 
+            this.lblAuthType.AutoSize = true;
+            this.lblAuthType.Location = new System.Drawing.Point(10, 15);
+            this.lblAuthType.Name = "lblAuthType";
+            this.lblAuthType.Size = new System.Drawing.Size(110, 13);
+            this.lblAuthType.TabIndex = 0;
+            this.lblAuthType.Text = "驗證類型 / Auth Type:";
+            // 
+            // cmbAuthType
+            // 
+            this.cmbAuthType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbAuthType.FormattingEnabled = true;
+            this.cmbAuthType.Items.AddRange(new object[] {
+            "None",
+            "Basic Authentication",
+            "Bearer Token",
+            "OAuth 2.0",
+            "API Key"});
+            this.cmbAuthType.Location = new System.Drawing.Point(130, 12);
+            this.cmbAuthType.Name = "cmbAuthType";
+            this.cmbAuthType.Size = new System.Drawing.Size(250, 21);
+            this.cmbAuthType.TabIndex = 1;
+            this.cmbAuthType.SelectedIndexChanged += new System.EventHandler(this.cmbAuthType_SelectedIndexChanged);
+            // 
+            // lblAuthUsername
+            // 
+            this.lblAuthUsername.AutoSize = true;
+            this.lblAuthUsername.Location = new System.Drawing.Point(10, 50);
+            this.lblAuthUsername.Name = "lblAuthUsername";
+            this.lblAuthUsername.Size = new System.Drawing.Size(100, 13);
+            this.lblAuthUsername.TabIndex = 2;
+            this.lblAuthUsername.Text = "使用者名稱 / Username:";
+            this.lblAuthUsername.Visible = false;
+            // 
+            // txtAuthUsername
+            // 
+            this.txtAuthUsername.Location = new System.Drawing.Point(130, 47);
+            this.txtAuthUsername.Name = "txtAuthUsername";
+            this.txtAuthUsername.Size = new System.Drawing.Size(250, 20);
+            this.txtAuthUsername.TabIndex = 3;
+            this.txtAuthUsername.Visible = false;
+            // 
+            // lblAuthPassword
+            // 
+            this.lblAuthPassword.AutoSize = true;
+            this.lblAuthPassword.Location = new System.Drawing.Point(10, 80);
+            this.lblAuthPassword.Name = "lblAuthPassword";
+            this.lblAuthPassword.Size = new System.Drawing.Size(80, 13);
+            this.lblAuthPassword.TabIndex = 4;
+            this.lblAuthPassword.Text = "密碼 / Password:";
+            this.lblAuthPassword.Visible = false;
+            // 
+            // txtAuthPassword
+            // 
+            this.txtAuthPassword.Location = new System.Drawing.Point(130, 77);
+            this.txtAuthPassword.Name = "txtAuthPassword";
+            this.txtAuthPassword.PasswordChar = '*';
+            this.txtAuthPassword.Size = new System.Drawing.Size(250, 20);
+            this.txtAuthPassword.TabIndex = 5;
+            this.txtAuthPassword.Visible = false;
+            // 
+            // lblAuthToken
+            // 
+            this.lblAuthToken.AutoSize = true;
+            this.lblAuthToken.Location = new System.Drawing.Point(10, 50);
+            this.lblAuthToken.Name = "lblAuthToken";
+            this.lblAuthToken.Size = new System.Drawing.Size(85, 13);
+            this.lblAuthToken.TabIndex = 6;
+            this.lblAuthToken.Text = "令牌 / Token:";
+            this.lblAuthToken.Visible = false;
+            // 
+            // txtAuthToken
+            // 
+            this.txtAuthToken.Location = new System.Drawing.Point(130, 47);
+            this.txtAuthToken.Multiline = true;
+            this.txtAuthToken.Name = "txtAuthToken";
+            this.txtAuthToken.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtAuthToken.Size = new System.Drawing.Size(250, 60);
+            this.txtAuthToken.TabIndex = 7;
+            this.txtAuthToken.Visible = false;
+            // 
+            // lblApiKeyName
+            // 
+            this.lblApiKeyName.AutoSize = true;
+            this.lblApiKeyName.Location = new System.Drawing.Point(10, 50);
+            this.lblApiKeyName.Name = "lblApiKeyName";
+            this.lblApiKeyName.Size = new System.Drawing.Size(90, 13);
+            this.lblApiKeyName.TabIndex = 8;
+            this.lblApiKeyName.Text = "金鑰名稱 / Key Name:";
+            this.lblApiKeyName.Visible = false;
+            // 
+            // txtApiKeyName
+            // 
+            this.txtApiKeyName.Location = new System.Drawing.Point(130, 47);
+            this.txtApiKeyName.Name = "txtApiKeyName";
+            this.txtApiKeyName.Size = new System.Drawing.Size(250, 20);
+            this.txtApiKeyName.TabIndex = 9;
+            this.txtApiKeyName.Visible = false;
+            // 
+            // lblApiKeyValue
+            // 
+            this.lblApiKeyValue.AutoSize = true;
+            this.lblApiKeyValue.Location = new System.Drawing.Point(10, 80);
+            this.lblApiKeyValue.Name = "lblApiKeyValue";
+            this.lblApiKeyValue.Size = new System.Drawing.Size(85, 13);
+            this.lblApiKeyValue.TabIndex = 10;
+            this.lblApiKeyValue.Text = "金鑰值 / Key Value:";
+            this.lblApiKeyValue.Visible = false;
+            // 
+            // txtApiKeyValue
+            // 
+            this.txtApiKeyValue.Location = new System.Drawing.Point(130, 77);
+            this.txtApiKeyValue.Name = "txtApiKeyValue";
+            this.txtApiKeyValue.Size = new System.Drawing.Size(250, 20);
+            this.txtApiKeyValue.TabIndex = 11;
+            this.txtApiKeyValue.Visible = false;
+            // 
+            // lblApiKeyLocation
+            // 
+            this.lblApiKeyLocation.AutoSize = true;
+            this.lblApiKeyLocation.Location = new System.Drawing.Point(10, 110);
+            this.lblApiKeyLocation.Name = "lblApiKeyLocation";
+            this.lblApiKeyLocation.Size = new System.Drawing.Size(90, 13);
+            this.lblApiKeyLocation.TabIndex = 12;
+            this.lblApiKeyLocation.Text = "位置 / Add to:";
+            this.lblApiKeyLocation.Visible = false;
+            // 
+            // rdoApiKeyHeader
+            // 
+            this.rdoApiKeyHeader.AutoSize = true;
+            this.rdoApiKeyHeader.Checked = true;
+            this.rdoApiKeyHeader.Location = new System.Drawing.Point(130, 108);
+            this.rdoApiKeyHeader.Name = "rdoApiKeyHeader";
+            this.rdoApiKeyHeader.Size = new System.Drawing.Size(60, 17);
+            this.rdoApiKeyHeader.TabIndex = 13;
+            this.rdoApiKeyHeader.TabStop = true;
+            this.rdoApiKeyHeader.Text = "Header";
+            this.rdoApiKeyHeader.UseVisualStyleBackColor = true;
+            this.rdoApiKeyHeader.Visible = false;
+            // 
+            // rdoApiKeyQuery
+            // 
+            this.rdoApiKeyQuery.AutoSize = true;
+            this.rdoApiKeyQuery.Location = new System.Drawing.Point(200, 108);
+            this.rdoApiKeyQuery.Name = "rdoApiKeyQuery";
+            this.rdoApiKeyQuery.Size = new System.Drawing.Size(105, 17);
+            this.rdoApiKeyQuery.TabIndex = 14;
+            this.rdoApiKeyQuery.Text = "Query Parameter";
+            this.rdoApiKeyQuery.UseVisualStyleBackColor = true;
+            this.rdoApiKeyQuery.Visible = false;
             // 
             // cmbMethod
             // 
@@ -495,6 +690,8 @@ namespace myPostman
             this.tabPageHeaders.PerformLayout();
             this.tabPageBody.ResumeLayout(false);
             this.tabPageBody.PerformLayout();
+            this.tabPageAuth.ResumeLayout(false);
+            this.tabPageAuth.PerformLayout();
             this.groupBoxSavedRequests.ResumeLayout(false);
             this.groupBoxResponse.ResumeLayout(false);
             this.tabControlResponse.ResumeLayout(false);
@@ -508,6 +705,7 @@ namespace myPostman
 
             // Set default selection
             this.cmbMethod.SelectedIndex = 0;
+            this.cmbAuthType.SelectedIndex = 0;
         }
 
         #endregion
@@ -545,5 +743,21 @@ namespace myPostman
         private System.Windows.Forms.TabPage tabPageResponseHeaders;
         private System.Windows.Forms.TextBox txtResponseHeaders;
         private System.Windows.Forms.CheckBox chkIgnoreCertificate;
+        private System.Windows.Forms.TabPage tabPageAuth;
+        private System.Windows.Forms.ComboBox cmbAuthType;
+        private System.Windows.Forms.Label lblAuthType;
+        private System.Windows.Forms.Label lblAuthUsername;
+        private System.Windows.Forms.TextBox txtAuthUsername;
+        private System.Windows.Forms.Label lblAuthPassword;
+        private System.Windows.Forms.TextBox txtAuthPassword;
+        private System.Windows.Forms.Label lblAuthToken;
+        private System.Windows.Forms.TextBox txtAuthToken;
+        private System.Windows.Forms.Label lblApiKeyName;
+        private System.Windows.Forms.TextBox txtApiKeyName;
+        private System.Windows.Forms.Label lblApiKeyValue;
+        private System.Windows.Forms.TextBox txtApiKeyValue;
+        private System.Windows.Forms.RadioButton rdoApiKeyHeader;
+        private System.Windows.Forms.RadioButton rdoApiKeyQuery;
+        private System.Windows.Forms.Label lblApiKeyLocation;
     }
 }

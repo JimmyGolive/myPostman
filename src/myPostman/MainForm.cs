@@ -12,10 +12,12 @@ namespace myPostman
     {
         private List<RequestConfig> savedConfigs;
         private bool isRequestInProgress = false;
+        private AuthenticationConfig currentAuthConfig;
 
         public MainForm()
         {
             InitializeComponent();
+            currentAuthConfig = new AuthenticationConfig();
             LoadSavedConfigs();
         }
 
@@ -88,10 +90,13 @@ namespace myPostman
             lblStatus.Text = "狀態 / Status: 發送中... / Sending...";
             Application.DoEvents();
 
+            // Get current authentication configuration from UI
+            AuthenticationConfig authConfig = GetAuthenticationConfigFromUI();
+
             // Use a thread to avoid freezing the UI
             Thread requestThread = new Thread(delegate()
             {
-                HttpResponse response = HttpRequestHelper.SendRequest(url, method, headers, body, timeout);
+                HttpResponse response = HttpRequestHelper.SendRequest(url, method, headers, body, timeout, authConfig);
 
                 // Update UI on the main thread
                 this.BeginInvoke((MethodInvoker)delegate
@@ -173,12 +178,15 @@ namespace myPostman
                 return;
             }
 
+            AuthenticationConfig authConfig = GetAuthenticationConfigFromUI();
+
             RequestConfig config = new RequestConfig(
                 name,
                 txtUrl.Text.Trim(),
                 cmbMethod.SelectedItem.ToString(),
                 txtHeaders.Text,
-                txtBody.Text
+                txtBody.Text,
+                authConfig
             );
 
             savedConfigs.Add(config);
@@ -220,6 +228,12 @@ namespace myPostman
 
             txtHeaders.Text = config.Headers;
             txtBody.Text = config.Body;
+
+            // Load authentication configuration
+            if (config.Authentication != null)
+            {
+                LoadAuthenticationConfigToUI(config.Authentication);
+            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -383,6 +397,133 @@ namespace myPostman
             else
             {
                 ServicePointManager.ServerCertificateValidationCallback = null;
+            }
+        }
+
+        private AuthenticationConfig GetAuthenticationConfigFromUI()
+        {
+            AuthenticationConfig config = new AuthenticationConfig();
+
+            // Get authentication type from combo box
+            if (cmbAuthType.SelectedIndex == 0) // None
+            {
+                config.Type = AuthenticationType.None;
+            }
+            else if (cmbAuthType.SelectedIndex == 1) // Basic
+            {
+                config.Type = AuthenticationType.Basic;
+                config.Username = txtAuthUsername.Text;
+                config.Password = txtAuthPassword.Text;
+            }
+            else if (cmbAuthType.SelectedIndex == 2) // Bearer Token
+            {
+                config.Type = AuthenticationType.BearerToken;
+                config.Token = txtAuthToken.Text;
+            }
+            else if (cmbAuthType.SelectedIndex == 3) // OAuth 2.0
+            {
+                config.Type = AuthenticationType.OAuth2;
+                config.Token = txtAuthToken.Text;
+            }
+            else if (cmbAuthType.SelectedIndex == 4) // API Key
+            {
+                config.Type = AuthenticationType.ApiKey;
+                config.ApiKeyName = txtApiKeyName.Text;
+                config.ApiKeyValue = txtApiKeyValue.Text;
+                config.ApiKeyLocation = rdoApiKeyHeader.Checked ? ApiKeyLocation.Header : ApiKeyLocation.QueryParam;
+            }
+
+            return config;
+        }
+
+        private void LoadAuthenticationConfigToUI(AuthenticationConfig config)
+        {
+            if (config == null)
+            {
+                config = new AuthenticationConfig();
+            }
+
+            // Set authentication type
+            switch (config.Type)
+            {
+                case AuthenticationType.None:
+                    cmbAuthType.SelectedIndex = 0;
+                    break;
+                case AuthenticationType.Basic:
+                    cmbAuthType.SelectedIndex = 1;
+                    txtAuthUsername.Text = config.Username ?? "";
+                    txtAuthPassword.Text = config.Password ?? "";
+                    break;
+                case AuthenticationType.BearerToken:
+                    cmbAuthType.SelectedIndex = 2;
+                    txtAuthToken.Text = config.Token ?? "";
+                    break;
+                case AuthenticationType.OAuth2:
+                    cmbAuthType.SelectedIndex = 3;
+                    txtAuthToken.Text = config.Token ?? "";
+                    break;
+                case AuthenticationType.ApiKey:
+                    cmbAuthType.SelectedIndex = 4;
+                    txtApiKeyName.Text = config.ApiKeyName ?? "";
+                    txtApiKeyValue.Text = config.ApiKeyValue ?? "";
+                    if (config.ApiKeyLocation == ApiKeyLocation.Header)
+                    {
+                        rdoApiKeyHeader.Checked = true;
+                    }
+                    else
+                    {
+                        rdoApiKeyQuery.Checked = true;
+                    }
+                    break;
+            }
+
+            UpdateAuthenticationControlsVisibility();
+        }
+
+        private void cmbAuthType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateAuthenticationControlsVisibility();
+        }
+
+        private void UpdateAuthenticationControlsVisibility()
+        {
+            // Hide all authentication controls
+            lblAuthUsername.Visible = false;
+            txtAuthUsername.Visible = false;
+            lblAuthPassword.Visible = false;
+            txtAuthPassword.Visible = false;
+            lblAuthToken.Visible = false;
+            txtAuthToken.Visible = false;
+            lblApiKeyName.Visible = false;
+            txtApiKeyName.Visible = false;
+            lblApiKeyValue.Visible = false;
+            txtApiKeyValue.Visible = false;
+            rdoApiKeyHeader.Visible = false;
+            rdoApiKeyQuery.Visible = false;
+            lblApiKeyLocation.Visible = false;
+
+            // Show relevant controls based on selected authentication type
+            if (cmbAuthType.SelectedIndex == 1) // Basic
+            {
+                lblAuthUsername.Visible = true;
+                txtAuthUsername.Visible = true;
+                lblAuthPassword.Visible = true;
+                txtAuthPassword.Visible = true;
+            }
+            else if (cmbAuthType.SelectedIndex == 2 || cmbAuthType.SelectedIndex == 3) // Bearer Token or OAuth 2.0
+            {
+                lblAuthToken.Visible = true;
+                txtAuthToken.Visible = true;
+            }
+            else if (cmbAuthType.SelectedIndex == 4) // API Key
+            {
+                lblApiKeyName.Visible = true;
+                txtApiKeyName.Visible = true;
+                lblApiKeyValue.Visible = true;
+                txtApiKeyValue.Visible = true;
+                lblApiKeyLocation.Visible = true;
+                rdoApiKeyHeader.Visible = true;
+                rdoApiKeyQuery.Visible = true;
             }
         }
     }

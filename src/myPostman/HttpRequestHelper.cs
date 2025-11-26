@@ -21,6 +21,21 @@ namespace myPostman
         /// <returns>HttpResponse containing status, headers, and body</returns>
         public static HttpResponse SendRequest(string url, string method, string headers, string body, int timeout)
         {
+            return SendRequest(url, method, headers, body, timeout, null);
+        }
+
+        /// <summary>
+        /// Sends an HTTP request with authentication and returns the response
+        /// </summary>
+        /// <param name="url">Target URL</param>
+        /// <param name="method">HTTP method (GET, POST, PUT, DELETE)</param>
+        /// <param name="headers">Request headers (format: "Header1: Value1\nHeader2: Value2")</param>
+        /// <param name="body">Request body</param>
+        /// <param name="timeout">Timeout in milliseconds</param>
+        /// <param name="authConfig">Authentication configuration</param>
+        /// <returns>HttpResponse containing status, headers, and body</returns>
+        public static HttpResponse SendRequest(string url, string method, string headers, string body, int timeout, AuthenticationConfig authConfig)
+        {
             HttpResponse response = new HttpResponse();
             HttpWebRequest request = null;
             HttpWebResponse webResponse = null;
@@ -33,6 +48,18 @@ namespace myPostman
                 if (string.IsNullOrEmpty(url))
                 {
                     throw new ArgumentException("URL cannot be empty");
+                }
+
+                // Apply authentication to URL if needed (for API Key in query param)
+                if (authConfig != null)
+                {
+                    url = AuthenticationHelper.ApplyApiKeyToUrl(url, authConfig);
+                }
+
+                // Apply authentication to headers
+                if (authConfig != null)
+                {
+                    headers = AuthenticationHelper.ApplyAuthentication(headers, authConfig);
                 }
 
                 // Create request
