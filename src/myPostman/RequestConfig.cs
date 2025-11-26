@@ -148,6 +148,62 @@ namespace myPostman
         }
 
         /// <summary>
+        /// Helper method to load authentication configuration from XML node
+        /// </summary>
+        private static AuthenticationConfig LoadAuthenticationFromXml(XmlNode authNode)
+        {
+            if (authNode == null)
+            {
+                return new AuthenticationConfig();
+            }
+
+            AuthenticationConfig auth = new AuthenticationConfig();
+
+            XmlNode authTypeNode = authNode.SelectSingleNode("Type");
+            if (authTypeNode != null)
+            {
+                try
+                {
+                    auth.Type = (AuthenticationType)Enum.Parse(typeof(AuthenticationType), authTypeNode.InnerText);
+                }
+                catch
+                {
+                    auth.Type = AuthenticationType.None;
+                }
+            }
+
+            XmlNode usernameNode = authNode.SelectSingleNode("Username");
+            if (usernameNode != null) auth.Username = usernameNode.InnerText;
+
+            XmlNode passwordNode = authNode.SelectSingleNode("Password");
+            if (passwordNode != null) auth.Password = passwordNode.InnerText;
+
+            XmlNode tokenNode = authNode.SelectSingleNode("Token");
+            if (tokenNode != null) auth.Token = tokenNode.InnerText;
+
+            XmlNode apiKeyNameNode = authNode.SelectSingleNode("ApiKeyName");
+            if (apiKeyNameNode != null) auth.ApiKeyName = apiKeyNameNode.InnerText;
+
+            XmlNode apiKeyValueNode = authNode.SelectSingleNode("ApiKeyValue");
+            if (apiKeyValueNode != null) auth.ApiKeyValue = apiKeyValueNode.InnerText;
+
+            XmlNode apiKeyLocationNode = authNode.SelectSingleNode("ApiKeyLocation");
+            if (apiKeyLocationNode != null)
+            {
+                try
+                {
+                    auth.ApiKeyLocation = (ApiKeyLocation)Enum.Parse(typeof(ApiKeyLocation), apiKeyLocationNode.InnerText);
+                }
+                catch
+                {
+                    auth.ApiKeyLocation = ApiKeyLocation.Header;
+                }
+            }
+
+            return auth;
+        }
+
+        /// <summary>
         /// Loads request configurations from file
         /// </summary>
         public static List<RequestConfig> LoadConfigs()
@@ -187,53 +243,9 @@ namespace myPostman
                         XmlNode bodyNode = node.SelectSingleNode("Body");
                         if (bodyNode != null) config.Body = bodyNode.InnerText;
 
-                        // Load authentication configuration
+                        // Load authentication configuration using helper method
                         XmlNode authNode = node.SelectSingleNode("Authentication");
-                        if (authNode != null)
-                        {
-                            config.Authentication = new AuthenticationConfig();
-
-                            XmlNode authTypeNode = authNode.SelectSingleNode("Type");
-                            if (authTypeNode != null)
-                            {
-                                try
-                                {
-                                    config.Authentication.Type = (AuthenticationType)Enum.Parse(typeof(AuthenticationType), authTypeNode.InnerText);
-                                }
-                                catch
-                                {
-                                    config.Authentication.Type = AuthenticationType.None;
-                                }
-                            }
-
-                            XmlNode usernameNode = authNode.SelectSingleNode("Username");
-                            if (usernameNode != null) config.Authentication.Username = usernameNode.InnerText;
-
-                            XmlNode passwordNode = authNode.SelectSingleNode("Password");
-                            if (passwordNode != null) config.Authentication.Password = passwordNode.InnerText;
-
-                            XmlNode tokenNode = authNode.SelectSingleNode("Token");
-                            if (tokenNode != null) config.Authentication.Token = tokenNode.InnerText;
-
-                            XmlNode apiKeyNameNode = authNode.SelectSingleNode("ApiKeyName");
-                            if (apiKeyNameNode != null) config.Authentication.ApiKeyName = apiKeyNameNode.InnerText;
-
-                            XmlNode apiKeyValueNode = authNode.SelectSingleNode("ApiKeyValue");
-                            if (apiKeyValueNode != null) config.Authentication.ApiKeyValue = apiKeyValueNode.InnerText;
-
-                            XmlNode apiKeyLocationNode = authNode.SelectSingleNode("ApiKeyLocation");
-                            if (apiKeyLocationNode != null)
-                            {
-                                try
-                                {
-                                    config.Authentication.ApiKeyLocation = (ApiKeyLocation)Enum.Parse(typeof(ApiKeyLocation), apiKeyLocationNode.InnerText);
-                                }
-                                catch
-                                {
-                                    config.Authentication.ApiKeyLocation = ApiKeyLocation.Header;
-                                }
-                            }
-                        }
+                        config.Authentication = LoadAuthenticationFromXml(authNode);
 
                         configs.Add(config);
                     }
@@ -347,53 +359,9 @@ namespace myPostman
                 XmlNode bodyNode = root.SelectSingleNode("Body");
                 if (bodyNode != null) config.Body = bodyNode.InnerText;
 
-                // Load authentication configuration
+                // Load authentication configuration using helper method
                 XmlNode authNode = root.SelectSingleNode("Authentication");
-                if (authNode != null)
-                {
-                    config.Authentication = new AuthenticationConfig();
-
-                    XmlNode authTypeNode = authNode.SelectSingleNode("Type");
-                    if (authTypeNode != null)
-                    {
-                        try
-                        {
-                            config.Authentication.Type = (AuthenticationType)Enum.Parse(typeof(AuthenticationType), authTypeNode.InnerText);
-                        }
-                        catch
-                        {
-                            config.Authentication.Type = AuthenticationType.None;
-                        }
-                    }
-
-                    XmlNode usernameNode = authNode.SelectSingleNode("Username");
-                    if (usernameNode != null) config.Authentication.Username = usernameNode.InnerText;
-
-                    XmlNode passwordNode = authNode.SelectSingleNode("Password");
-                    if (passwordNode != null) config.Authentication.Password = passwordNode.InnerText;
-
-                    XmlNode tokenNode = authNode.SelectSingleNode("Token");
-                    if (tokenNode != null) config.Authentication.Token = tokenNode.InnerText;
-
-                    XmlNode apiKeyNameNode = authNode.SelectSingleNode("ApiKeyName");
-                    if (apiKeyNameNode != null) config.Authentication.ApiKeyName = apiKeyNameNode.InnerText;
-
-                    XmlNode apiKeyValueNode = authNode.SelectSingleNode("ApiKeyValue");
-                    if (apiKeyValueNode != null) config.Authentication.ApiKeyValue = apiKeyValueNode.InnerText;
-
-                    XmlNode apiKeyLocationNode = authNode.SelectSingleNode("ApiKeyLocation");
-                    if (apiKeyLocationNode != null)
-                    {
-                        try
-                        {
-                            config.Authentication.ApiKeyLocation = (ApiKeyLocation)Enum.Parse(typeof(ApiKeyLocation), apiKeyLocationNode.InnerText);
-                        }
-                        catch
-                        {
-                            config.Authentication.ApiKeyLocation = ApiKeyLocation.Header;
-                        }
-                    }
-                }
+                config.Authentication = LoadAuthenticationFromXml(authNode);
             }
 
             return config;

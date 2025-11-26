@@ -12,12 +12,10 @@ namespace myPostman
     {
         private List<RequestConfig> savedConfigs;
         private bool isRequestInProgress = false;
-        private AuthenticationConfig currentAuthConfig;
 
         public MainForm()
         {
             InitializeComponent();
-            currentAuthConfig = new AuthenticationConfig();
             LoadSavedConfigs();
         }
 

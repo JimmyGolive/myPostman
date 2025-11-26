@@ -64,13 +64,23 @@ namespace myPostman
         /// Generates the Authorization header value for Basic authentication
         /// </summary>
         /// <param name="username">Username</param>
-        /// <param name="password">Password</param>
+        /// <param name="password">Password (can be empty for some APIs)</param>
         /// <returns>Base64-encoded credentials</returns>
+        /// <remarks>
+        /// Note: Empty passwords are allowed as some APIs may accept username-only Basic auth.
+        /// The password will be treated as an empty string if null.
+        /// </remarks>
         public static string GetBasicAuthHeader(string username, string password)
         {
             if (string.IsNullOrEmpty(username))
             {
                 throw new ArgumentException("Username cannot be empty");
+            }
+
+            // Allow empty password as some APIs may accept it
+            if (password == null)
+            {
+                password = "";
             }
 
             string credentials = username + ":" + password;
