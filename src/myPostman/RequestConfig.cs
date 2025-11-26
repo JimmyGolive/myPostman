@@ -41,6 +41,10 @@ namespace myPostman
 
     /// <summary>
     /// Helper class for saving and loading request configurations
+    /// 
+    /// WARNING: Authentication credentials (passwords, tokens, API keys) are stored in plain text.
+    /// This tool is designed for development and testing purposes only.
+    /// Do not use this tool with production credentials or sensitive accounts.
     /// </summary>
     public class RequestConfigManager
     {

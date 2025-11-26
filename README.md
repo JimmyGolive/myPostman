@@ -67,6 +67,8 @@ No authentication will be applied to the request.
 - **Key Value / 金鑰值**: Enter the API key value
 - The API key will be sent as a custom header with the specified name
 
+**⚠️ Security Note / 安全注意事項**: Authentication credentials (passwords, tokens, API keys) are stored in plain text when you save requests. This tool is designed for development and testing purposes only. Do not use with production credentials or on shared computers. / 認證憑證（密碼、令牌、API 金鑰）在儲存請求時以明文形式保存。此工具僅供開發和測試使用，請勿使用於生產環境憑證或共用電腦。
+
 ### Saving Requests / 儲存請求
 
 1. Configure your request (URL, method, headers, body, authentication)
